@@ -265,16 +265,38 @@ footer{
 }
 </style>
 
-
-<link rel="stylesheet" href="styles.css">
-</head>
+<style>
+.brand-link{display:block;flex:0 0 auto;line-height:0}
+.topbar{align-items:center;flex-wrap:wrap;overflow:visible}
+.logo{width:340px;max-width:34vw;height:auto;max-height:none;object-fit:contain;overflow:visible}
+.site-nav{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-left:auto}
+.site-nav a{display:inline-block;text-decoration:none;color:var(--blue);font-weight:800;font-size:13px;padding:9px 11px;border-radius:999px;border:1px solid #dce6f2;background:#fff}
+.site-nav a:hover,.site-nav a.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+@media(max-width:1200px){.top-features{display:none}.site-nav{margin-left:auto}.logo{max-width:43vw}}
+@media(max-width:800px){.topbar{justify-content:center;gap:10px}.brand-link{width:100%;text-align:center}.logo{width:340px;max-width:92vw}.site-nav{margin:0;justify-content:center}}
+</style>
+<style>
+.topbar{min-height:84px;padding:10px 5%;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;background:#fff;border-bottom:4px solid var(--orange);}
+.brand-link{display:block;line-height:0;flex:0 0 auto}
+.topbar .logo{width:220px;max-width:42vw;height:auto;display:block;object-fit:contain}
+.site-nav{display:flex;gap:6px;align-items:center;justify-content:flex-end;flex-wrap:wrap;margin-left:auto}
+.site-nav a{display:inline-block;text-decoration:none;color:var(--blue);font-weight:800;font-size:13px;padding:9px 11px;border-radius:10px;border:1px solid #dce6f2;background:#fff;white-space:nowrap}
+.site-nav a:hover,.site-nav a.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+@media(max-width:800px){.topbar{justify-content:center;gap:8px;padding:9px 10px}.brand-link{width:100%;text-align:center}.topbar .logo{width:175px;max-width:none;margin:0 auto}.site-nav{width:100%;margin:0;justify-content:center;gap:4px}.site-nav a{font-size:11px;padding:7px 7px}}
+@media(max-width:520px){.topbar .logo{width:160px}.site-nav a{font-size:10.5px;padding:6px 6px}}
+</style></head>
 
 <body>
 
-<header class="site-header">
-  <a class="brand-link" href="index.html" aria-label="IMSON Home"><img class="site-logo" src="imson-logo.jpg" alt="IMSON™ Infinite Innovation"></a>
+<header class="topbar">
+  <a class="brand-link" href="index.html" aria-label="IMSON Home"><img class="logo" src="assets/imson-logo.png" alt="IMSON™ Infinite Innovation"></a>
   <nav class="site-nav" aria-label="Main navigation">
-    <a href="index.html">Home</a><a href="products.html">Products</a><a href="about.html">About Us</a><a href="contact.html">Contact</a><a class="special active" href="toner-finder.html">Toner Finder</a><a class="special" href="qr-verification.html">QR Verify</a>
+    <a href="index.html">Home</a>
+    <a href="index.html#products">Products</a>
+    <a href="index.html#about">About Us</a>
+    <a href="index.html#contact">Contact</a>
+    <a class="active" href="toner-finder.html">Toner Finder</a>
+    <a href="qr-verification.html">QR Verify</a>
   </nav>
 </header>
 
@@ -531,6 +553,5 @@ async function save(id){
 
 load();
 </script>
-<style>/* Keep this page aligned with the main IMSON website header */ .site-header{margin:0}.site-nav a{font-family:Arial,Helvetica,sans-serif}</style>
 </body>
 </html>

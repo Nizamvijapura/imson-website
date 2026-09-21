@@ -1,8 +1,94 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>IMSON™ | Infinite Innovation</title><meta name="description" content="IMSON™ toner cartridges — reliable printing solutions, toner finder and genuine product verification."><link rel="icon" href="assets/imson-logo.jpg"><link rel="stylesheet" href="styles.css"></head><body>
-<header class="site-header"><a class="brand-link" href="index.html"><img class="site-logo" src="imson-logo.jpg" alt="IMSON™ Infinite Innovation"></a><nav class="site-nav"><a class="active" href="index.html">Home</a><a href="products.html">Products</a><a href="about.html">About Us</a><a href="contact.html">Contact</a><a class="special" href="toner-finder.html">Toner Finder</a><a class="special" href="qr-verification.html">QR Verify</a></nav></header>
-<main>
-<section class="hero-home"><div class="container home-grid"><div><div class="eyebrow">IMSON™ • Infinite Innovation</div><h1>Reliable Toner.<br><span>Reliable Printing.</span></h1><p>Quality-focused toner cartridge solutions designed to make printer servicing simple, dependable and cost-effective.</p><div class="hero-actions"><a class="btn btn-orange" href="products.html">Explore Products →</a><a class="btn btn-white" href="toner-finder.html">Find Your Toner</a></div></div><div class="hero-card"><h2>IMSON™ Toner Finder</h2><div class="finder-mini"><b>Find the right toner for your printer</b><br>Search by toner model, alternate code or compatible printer model.</div><p style="color:#657089;line-height:1.6">Live toner information, rates and stock are loaded from your existing Supabase database.</p><a class="btn btn-orange" href="toner-finder.html">Open Toner Finder →</a></div></div></section>
-<section class="section"><div class="container"><h2 class="section-title">Everything You Need in One Place</h2><p class="section-sub">Fast toner search, product information and QR-based product verification — all in one IMSON website.</p><div class="features"><article class="card feature-card"><div class="feature-icon">🖨️</div><h3>Trusted Quality</h3><p>Reliable and consistent toner cartridge solutions for supported printer models.</p><a class="btn btn-navy" href="products.html">View Products</a></article><article class="card feature-card"><div class="feature-icon">🔎</div><h3>Easy Toner Finder</h3><p>Search by toner model, alternate code or printer model and get compatible records.</p><a class="btn btn-navy" href="toner-finder.html">Find Toner</a></article><article class="card feature-card"><div class="feature-icon">✓</div><h3>Genuine Product Verification</h3><p>Verify the product using the QR number printed on the IMSON cartridge or box.</p><a class="btn btn-navy" href="qr-verification.html">Verify Product</a></article></div></div></section>
-<section class="section" id="about-preview"><div class="container about-grid"><div class="card"><h2 style="color:var(--navy)">About IMSON™</h2><p style="line-height:1.7;color:var(--muted)"><b style="color:var(--text)">IMSON™ — Infinite Innovation</b> is a toner cartridge brand of <b style="color:var(--text)">WIZTECH INNOVATION LLP</b>, focused on dependable printing solutions and practical technology-driven tools.</p><p style="line-height:1.7;color:var(--muted)">Marketed by <b style="color:var(--text)">WIZTECH INNOVATION LLP — ISO 9001:2015 Certified</b>.</p><a class="btn btn-orange" href="about.html">About Us →</a></div><div class="facts"><div class="card fact"><b>HP Series</b>Wide Compatibility</div><div class="card fact"><b>Canon Series</b>Compatible Solutions</div><div class="card fact"><b>Supabase</b>Live Data</div><div class="card fact"><b>QR Verify</b>Product Check</div></div></div></section>
-<section class="section"><div class="container"><div class="contact-cta"><h2>Need Help Finding a Toner?</h2><p>Contact IMSON / WIZTECH INNOVATION LLP</p><p style="font-size:25px;margin:10px 0">📞 <a href="tel:9727908889">9727908889</a></p><span class="iso">ISO 9001:2015 Certified</span></div></div></section>
-</main><footer class="footer"><div class="brand">IMSON™</div><div class="tag">Infinite Innovation</div><div class="marketed">Marketed by WIZTECH INNOVATION LLP — ISO 9001:2015 Certified</div><div class="contact">Contact: 9727908889</div><div class="official">Official IMSON website</div></footer></body></html>
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="IMSON™ - Infinite Innovation. Toner cartridge and printing solutions.">
+<title>IMSON™ | Infinite Innovation</title><style>
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:#14213d;background:#fff}
+:root{--navy:#071d72;--orange:#ff7008;--soft:#f5f8ff;--line:#e3e9f5}
+.container{width:min(1180px,92%);margin:auto}a{text-decoration:none}
+header{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line)}
+.nav{min-height:84px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.logo{width:220px;max-width:48vw;height:auto;display:block;object-fit:contain}
+nav{display:flex;gap:25px;align-items:center;font-weight:700;color:#24355d}nav a:hover{color:var(--orange)}
+.navbtn,.orange{background:var(--orange);color:#fff!important;padding:13px 20px;border-radius:11px}
+.hero{background:linear-gradient(135deg,#061b72,#0a3198 70%,#09226f);color:#fff}
+.heroGrid{display:grid;grid-template-columns:1.15fr .85fr;gap:45px;align-items:center;padding:78px 0}
+.eyebrow{color:#ffd5b4;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+h1{font-size:clamp(42px,6vw,72px);line-height:1.03;margin:14px 0}.hero p{font-size:20px;line-height:1.6;color:#eaf0ff}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}.white{background:#fff;color:var(--navy);padding:13px 20px;border-radius:11px;font-weight:800}
+.heroCard{background:#fff;color:#14213d;padding:28px;border-radius:22px;box-shadow:0 20px 55px #0004}.heroCard h2{color:var(--navy)}
+.searchbox{background:var(--soft);padding:18px;border-radius:15px;line-height:1.6}
+section{padding:72px 0}.title{text-align:center;max-width:760px;margin:0 auto 40px}.title h2{color:var(--navy);font-size:38px;margin:0 0 12px}.title p{color:#5b6780;line-height:1.6}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}.card{border:1px solid var(--line);border-radius:18px;padding:28px;box-shadow:0 8px 30px #0b287d0b}.icon{font-size:28px}.card h3{color:var(--navy);font-size:22px}.card p{color:#5b6780;line-height:1.6}
+.finder{background:var(--soft)}.finderBox{background:#fff;border:1px solid var(--line);border-radius:22px;padding:36px;display:flex;justify-content:space-between;align-items:center;gap:25px}.finderBox h2{color:var(--navy);margin:0 0 8px}
+.contact{background:var(--navy);color:#fff}.contactGrid{display:grid;grid-template-columns:1fr 1fr;gap:35px}.contact h2{font-size:38px}.contact p{color:#dce5ff;line-height:1.7}.contactCard{background:#fff;color:#14213d;padding:28px;border-radius:18px}.contactCard strong{color:var(--navy)}
+footer{background:#031452;color:#cbd7ff;padding:22px 0}.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+@media(max-width:800px){nav a:not(.navbtn){display:none}.heroGrid,.contactGrid,.cards{grid-template-columns:1fr}.finderBox{flex-direction:column;align-items:flex-start}.logo{width:190px}}
+
+<style>
+.brand-link{display:block;line-height:0;flex:0 0 auto}
+.nav{min-height:84px;flex-wrap:wrap}
+.logo{width:220px;max-width:42vw;height:auto;display:block;object-fit:contain}
+nav{display:flex;gap:10px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+nav a{color:#071d72;font-weight:800;padding:10px 12px;border-radius:10px;white-space:nowrap}
+nav a.active,nav a:hover{background:#071d72;color:#fff}
+nav .navbtn{background:#ff7008;color:#fff!important;padding:11px 14px}
+nav .qrbtn{background:#ff7008}
+@media(max-width:800px){
+  header .nav{justify-content:center;gap:8px;padding:10px 0 12px}
+  .brand-link{width:100%;text-align:center}
+  .logo{width:175px;max-width:none;margin:0 auto}
+  nav{width:100%;justify-content:center;gap:5px}
+  nav a{font-size:12px;padding:8px 9px}
+  nav .navbtn{padding:8px 9px}
+}
+@media(max-width:520px){
+  .logo{width:160px}
+  nav{gap:4px}
+  nav a{font-size:11px;padding:7px 7px}
+}
+</style></head>
+<body>
+<header><div class="container nav">
+<a class="brand-link" href="index.html" aria-label="IMSON Home"><img class="logo" src="assets/imson-logo.png" alt="IMSON™ Infinite Innovation"></a>
+<nav aria-label="Main navigation"><a class="active" href="index.html">Home</a><a href="#products">Products</a><a href="#about">About Us</a><a href="#contact">Contact</a><a class="navbtn" href="toner-finder.html">Toner Finder</a><a class="navbtn qrbtn" href="qr-verification.html">QR Verify</a></nav>
+</div></header>
+
+<main id="home">
+<section class="hero"><div class="container heroGrid">
+<div><div class="eyebrow">IMSON™ • Infinite Innovation</div>
+<h1>Reliable Toner.<br>Reliable Printing.</h1>
+<p>Quality-focused toner cartridge solutions designed to make printer servicing simple, dependable and cost-effective.</p>
+<div class="actions"><a class="orange" href="toner-finder.html">Find Your Toner</a><a class="white" href="#products">Explore Products</a></div></div>
+<div class="heroCard"><h2>IMSON™ Toner Finder</h2>
+<div class="searchbox"><b>Find the right toner for your printer</b><br>Search by toner model, alternate code or compatible printer model.</div>
+<p style="color:#5b6780;line-height:1.6">Open the live IMSON™ toner finder for current database records, rates and stock.</p>
+<a class="orange" href="toner-finder.html">Open Toner Finder →</a></div>
+</div></section>
+
+<section id="products"><div class="container"><div class="title"><h2>IMSON™ Printing Solutions</h2>
+<p>Practical toner solutions and technology-driven tools for office and business printing.</p></div>
+<div class="cards">
+<article class="card"><div class="icon">🖨️</div><h3>Compatible Toners</h3><p>Compatible toner cartridge solutions for supported printer models and cartridge codes.</p></article>
+<article class="card"><div class="icon">🔎</div><h3>Easy Toner Finder</h3><p>Search printer model, toner model or alternate code and quickly find supported records.</p></article>
+<article class="card"><div class="icon">📦</div><h3>Stock & Pricing</h3><p>Database-driven stock and selling-rate information for easier business management.</p></article>
+</div></div></section>
+
+<section id="about"><div class="container"><div class="title"><h2>About IMSON™</h2>
+<p>IMSON™ is a printing consumables brand of Wiztech Innovation LLP, focused on toner cartridge solutions and practical technology-driven tools.</p></div></div></section>
+
+<section class="finder"><div class="container"><div class="finderBox">
+<div><h2>Looking for a specific toner?</h2><p>Search compatible printer models, toner codes, rates and stock.</p></div>
+<a class="orange" href="toner-finder.html">Search Toner →</a></div></div></section>
+
+<section id="contact" class="contact"><div class="container contactGrid"><div>
+<h2>Get in touch</h2><p>For IMSON™ toner cartridge enquiries, product information and business requirements, contact Wiztech Innovation LLP.</p>
+</div><div class="contactCard">
+<p><strong>Brand</strong><br>IMSON™ – Infinite Innovation</p>
+<p><strong>Company</strong><br>Wiztech Innovation LLP</p>
+<p><strong>Website</strong><br>www.imson.co.in</p>
+<p><strong>Toner Finder</strong><br><a href="toner-finder.html" style="color:#ff7008;font-weight:800">Open IMSON™ Toner Finder</a></p>
+</div></div></section>
+</main>
+<footer><div class="container foot"><span>© 2026 IMSON™ • A Brand of Wiztech Innovation LLP</span><span>Infinite Innovation</span></div></footer>
+</body></html>
