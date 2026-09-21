@@ -34,7 +34,3 @@ Replace 255 with the QR code stored in qr_products.
 
 SUPABASE:
 No database tables, records, credentials, or schema are changed by these website files.
-
-
-IMPORTANT LOGO FIX:
-The IMSON logo is included both at the repository root (imson-logo.jpg) and in assets/ so the header logo loads even if the assets folder was not uploaded separately. All pages now reference the root logo.

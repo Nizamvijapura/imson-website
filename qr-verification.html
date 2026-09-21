@@ -78,26 +78,15 @@ textarea{min-height:90px;resize:vertical}
  .admin-grid,.row{grid-template-columns:1fr}
 }
 </style>
-<style>
-.header{background:#fff;border-bottom:4px solid var(--orange);padding:10px 5%;display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:84px;flex-wrap:wrap;box-shadow:0 2px 14px #00000012;position:relative;z-index:5}
-.brand-link{display:block;line-height:0;flex:0 0 auto}
-.brand-logo{display:block;width:220px;max-width:42vw;height:auto;max-height:none;object-fit:contain}
-.site-nav{display:flex;gap:6px;align-items:center;justify-content:flex-end;flex-wrap:wrap;margin-left:auto}
-.site-nav a{display:inline-block;text-decoration:none;color:var(--navy);font-weight:800;font-size:13px;padding:9px 11px;border-radius:10px;border:1px solid var(--line);background:#fff;white-space:nowrap}
-.site-nav a:hover,.site-nav a.active{background:var(--navy);color:#fff;border-color:var(--navy)}
-@media(max-width:800px){.header{justify-content:center;gap:8px;padding:9px 10px;min-height:84px}.brand-link{width:100%;text-align:center}.brand-logo{width:175px;max-width:none;margin:0 auto}.site-nav{width:100%;margin:0;justify-content:center;gap:4px}.site-nav a{font-size:11px;padding:7px 7px}}
-@media(max-width:520px){.brand-logo{width:160px}.site-nav a{font-size:10.5px;padding:6px 6px}}
-</style></head>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
 <body>
-<header class="header">
-  <a class="brand-link" href="index.html" aria-label="IMSON Home"><img class="brand-logo" src="assets/imson-logo.png" alt="IMSON™ Infinite Innovation"></a>
+<header class="site-header">
+  <a class="brand-link" href="index.html" aria-label="IMSON Home"><img class="site-logo" src="assets/imson-logo.jpg" alt="IMSON™ Infinite Innovation"></a>
   <nav class="site-nav" aria-label="Main navigation">
-    <a href="index.html">Home</a>
-    <a href="index.html#products">Products</a>
-    <a href="index.html#about">About Us</a>
-    <a href="index.html#contact">Contact</a>
-    <a href="toner-finder.html">Toner Finder</a>
-    <a class="active" href="qr-verification.html">QR Verify</a>
+    <a href="index.html">Home</a><a href="products.html">Products</a><a href="about.html">About Us</a><a href="contact.html">Contact</a><a class="special" href="toner-finder.html">Toner Finder</a><a class="special active" href="qr-verification.html">QR Verify</a>
   </nav>
 </header>
 
@@ -114,24 +103,35 @@ textarea{min-height:90px;resize:vertical}
 </main>
 
 <section id="adminView" class="admin-wrap hidden">
-  <div class="admin-card" style="margin-bottom:18px"><b>IMSON Admin</b> — Product/QR management. Public users do not see this section.</div>
-  <div class="admin-grid">
+  <div class="admin-card" style="margin-bottom:18px">
+    <b>IMSON Owner Panel</b> — Supabase Auth protected. Public customers only see verification results.
+    <div id="adminAuth" style="margin-top:14px">
+      <div id="adminLoginBox">
+        <div class="row"><div><label>Owner Email</label><input id="adminEmail" type="email" autocomplete="username"></div><div><label>Password</label><input id="adminPassword" type="password" autocomplete="current-password"></div></div>
+        <div class="actions"><button class="btn btn-primary" onclick="adminLogin()">Login</button><button class="btn btn-light" onclick="showPublic()">Back to Website</button></div>
+        <p id="adminLoginMsg" style="font-size:13px;color:#667085"></p>
+      </div>
+      <div id="adminPanel" class="hidden"><button class="btn btn-light" onclick="adminLogout()">Logout</button></div>
+    </div>
+  </div>
+  <div id="adminWorkspace" class="admin-grid hidden">
     <div class="admin-card">
-      <h2 id="formTitle">Add Product</h2>
+      <h2 id="formTitle">Add QR Product</h2>
       <input type="hidden" id="productId">
+      <label>QR Code *</label><input id="qrCode" placeholder="255">
       <label>Product Code *</label><input id="code" placeholder="IMSON-88A">
       <label>Product Name *</label><input id="name" placeholder="IMSON 88A">
+      <div class="row"><div><label>Toner Model</label><input id="tonerModel" placeholder="88A"></div><div><label>Alternate Code</label><input id="alternateCode" placeholder="CC388A / HP 88A"></div></div>
       <div class="row"><div><label>Brand</label><input id="brand" value="IMSON"></div><div><label>Page Yield</label><input id="yield" placeholder="1500 Pages"></div></div>
       <div class="row"><div><label>Color</label><input id="color" value="Black"></div><div><label>Cartridge Type</label><input id="type" value="Compatible Toner Cartridge"></div></div>
       <label>Description</label><textarea id="description"></textarea>
-      <label>Compatible Printer Models — one per line</label><textarea id="printers" placeholder="HP LaserJet P1007&#10;HP LaserJet P1008&#10;HP LaserJet P1106"></textarea>
+      <label>Compatible Printer Models — one per line</label><textarea id="printers" placeholder="HP LaserJet P1007
+HP LaserJet P1008
+HP LaserJet P1106"></textarea>
       <div class="actions"><button class="btn btn-orange" onclick="saveProduct()">Save Product</button><button class="btn btn-light" onclick="resetForm()">Clear</button></div>
       <p id="saveMsg" style="font-size:13px;color:#667085"></p>
     </div>
-    <div class="admin-card">
-      <h2>QR Products</h2>
-      <div id="adminProducts"></div>
-    </div>
+    <div class="admin-card"><h2>QR Products</h2><div id="adminProducts"></div></div>
   </div>
 </section>
 
@@ -159,109 +159,44 @@ const SUPABASE_URL = "https://jehjwziynmklhstfksfe.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_3m0dPOkN4D0gfNXYubmPVg_6wRVC8wZ";
 let db = null;
 try { db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); } catch(e) { console.error(e); }
-const configured = () => !!db;
-
-function esc(s) { return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-function js(s) { return String(s ?? '').replaceAll('\\','\\\\').replaceAll("'","\\'").replaceAll('\n','\\n').replaceAll('\r',''); }
-
-function defaultYield(toner) {
-  const t = String(toner||'').toUpperCase();
-  if(t === '88A') return '1500 Pages';
-  if(t === '12A') return '2000 Pages';
-  return 'As specified on product packaging';
+const configured=()=>!!db;
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const js=s=>String(s??'').replaceAll('\\','\\\\').replaceAll("'","\\'").replaceAll('\n','\\n').replaceAll('\r','');
+function defaultYield(toner){const t=String(toner||'').toUpperCase();if(t==='88A')return'1500 Pages';if(t==='12A')return'2000 Pages';return'As specified on product packaging';}
+function verificationCard(p){
+ const toner=String(p.toner_model||'').trim();
+ const productName=toner?`IMSON ${toner} Compatible Toner Cartridge`:String(p.product_name||'IMSON Toner Cartridge');
+ const productCode=String(p.product_code|| (toner?`IMSON-${toner.toUpperCase()}`:'IMSON Toner Cartridge'));
+ const yieldText=String(p.page_yield||'').trim()||defaultYield(toner);
+ const alternate=String(p.alternate_code||'').trim()||'—';
+ const printers=Array.isArray(p.printers)?p.printers:(Array.isArray(p.printer_models)?p.printer_models:[]);
+ const printerHtml=printers.length?printers.map(x=>`<span class="badge">${esc(x)}</span>`).join(''):'<span style="color:#667085">Not listed</span>';
+ return `<article class="card verification"><div class="verify-top"><div class="verify-title">🟢 IMSON PRODUCT VERIFIED</div><div class="verify-sub">✓ Product information verified</div></div><h2 class="product-title">${esc(productName)}</h2><section class="spec-section"><div class="spec-heading">Product Specifications</div><table class="spec-table"><tr><td>Product Code</td><td><b>${esc(productCode)}</b></td></tr><tr><td>Toner Model</td><td>${esc(toner||'—')}</td></tr><tr><td>Page Yield</td><td><b>${esc(yieldText)}</b></td></tr><tr><td>Alternate Code</td><td>${esc(alternate)}</td></tr><tr><td>Toner Type</td><td>${esc(p.cartridge_type||'Black Laser Toner Cartridge')}</td></tr><tr><td>Warranty</td><td><b>6 Months</b> (against manufacturing defects)</td></tr></table></section><section class="printers-section"><div class="printer-heading">Compatible Printer Models</div><div class="printer-body">${printerHtml}</div></section><div class="market"><span class="main">Marketed by WIZTECH INNOVATION LLP</span><span class="iso">ISO 9001:2015 Certified</span></div><div class="contact-note">✓ Official IMSON product page &nbsp; • &nbsp; Contact: 9727908889</div></article>`;
 }
-
-function verificationCard(p) {
-  const toner = String(p.toner_model || '').trim();
-  const productName = toner ? `IMSON ${toner} Compatible Toner Cartridge` : String(p.product_name || 'IMSON Toner Cartridge');
-  const productCode = toner ? `IMSON-${toner.toUpperCase()}` : String(p.product_code || p.alternate_code || `IMSON-${p.qr_code}`);
-  const yieldText = String(p.page_yield || '').trim() || defaultYield(toner);
-  const alternate = String(p.alternate_code || '').trim() || '—';
-  const printers = Array.isArray(p.printers) ? p.printers : (Array.isArray(p.printer_models) ? p.printer_models : []);
-  const printerHtml = printers.length ? printers.map(x=>`<span class="badge">${esc(x)}</span>`).join('') : '<span style="color:#667085">Not listed</span>';
-  return `
-  <article class="card verification">
-    <div class="verify-top">
-      <div class="verify-title">🟢 IMSON PRODUCT VERIFIED</div>
-      <div class="verify-sub">✓ Product information verified</div>
-    </div>
-    <h2 class="product-title">${esc(productName)}</h2>
-
-    <section class="spec-section">
-      <div class="spec-heading">Product Specifications</div>
-      <table class="spec-table">
-        <tr><td>Product Code</td><td><b>${esc(productCode)}</b></td></tr>
-        <tr><td>Toner Model</td><td>${esc(toner || '—')}</td></tr>
-        <tr><td>Page Yield</td><td><b>${esc(yieldText)}</b></td></tr>
-        <tr><td>Alternate Code</td><td>${esc(alternate)}</td></tr>
-        <tr><td>Toner Type</td><td>${esc(p.cartridge_type || 'Black Laser Toner Cartridge')}</td></tr>
-        <tr><td>Warranty</td><td><b>6 Months</b> (against manufacturing defects)</td></tr>
-      </table>
-    </section>
-
-    <section class="printers-section">
-      <div class="printer-heading">Compatible Printer Models</div>
-      <div class="printer-body">${printerHtml}</div>
-    </section>
-
-    <div class="market">
-      <span class="main">Marketed by WIZTECH INNOVATION LLP</span>
-      <span class="iso">ISO 9001:2015 Certified</span>
-    </div>
-    <div class="contact-note">✓ Official IMSON product page &nbsp; • &nbsp; Contact: 9727908889</div>
-  </article>`;
+async function loadProducts(){
+ const q=(document.getElementById('search').value||'').trim().replace(/\s+/g,''); const box=document.getElementById('publicProducts');
+ if(!q){box.innerHTML='<div class="card" style="padding:18px;color:#667085">Enter the QR number printed on the IMSON sticker.</div>';return;}
+ if(!configured()){box.innerHTML='<div class="card" style="padding:18px"><b>Supabase is not configured.</b></div>';return;}
+ box.innerHTML='<div class="card" style="padding:18px;color:#667085">Verifying product…</div>';
+ const {data,error}=await db.from('qr_products').select('*').eq('qr_code',q).maybeSingle();
+ if(error){box.innerHTML='<div class="card" style="padding:18px"><b>Verification Error:</b><br>'+esc(error.message)+'</div>';return;}
+ box.innerHTML=data?verificationCard(data):'<div class="card" style="padding:18px;color:#667085">No product found for QR code <b>'+esc(q)+'</b>.</div>';
 }
-
-async function loadProducts() {
-  const q = (document.getElementById('search').value || '').trim().replace(/\s+/g,'');
-  const box = document.getElementById('publicProducts');
-  if(!q) { box.innerHTML = '<div class="card" style="padding:18px;color:#667085">Enter the QR number printed on the IMSON sticker.</div>'; return; }
-  if(!configured()) { box.innerHTML = '<div class="card" style="padding:18px"><b>Supabase is not configured.</b></div>'; return; }
-  box.innerHTML = '<div class="card" style="padding:18px;color:#667085">Verifying product…</div>';
-  const {data,error} = await db.from('qr_products').select('*').eq('qr_code',q).maybeSingle();
-  if(error) { box.innerHTML = '<div class="card" style="padding:18px"><b>Verification Error:</b><br>'+esc(error.message)+'</div>'; return; }
-  box.innerHTML = data ? verificationCard(data) : '<div class="card" style="padding:18px;color:#667085">No product found for QR code <b>'+esc(q)+'</b>.</div>';
-}
-
-document.getElementById('search').addEventListener('keydown',e=>{ if(e.key==='Enter') loadProducts(); });
-
-async function openProductFromQR() {
-  const params = new URLSearchParams(location.search);
-  const c = params.get('qr') || params.get('code') || params.get('product');
-  if(!c) return;
-  document.getElementById('search').value = c;
-  await loadProducts();
-}
-
-async function showAdminIfRequested() {
-  const params = new URLSearchParams(location.search);
-  if(params.get('admin') !== '1') return;
-  document.getElementById('publicView').classList.add('hidden');
-  document.getElementById('adminView').classList.remove('hidden');
-  await loadAdminProducts();
-}
-
-async function loadAdminProducts() {
-  if(!configured()) return;
-  const {data,error} = await db.from('qr_products').select('*').order('id',{ascending:true});
-  const el=document.getElementById('adminProducts');
-  if(error) { el.innerHTML=esc(error.message); return; }
-  el.innerHTML='<table class="admin-table"><thead><tr><th>QR</th><th>Product</th><th>Model</th><th>QR</th></tr></thead><tbody>'+data.map(p=>`<tr><td>${esc(p.qr_code)}</td><td>${esc(p.product_name||'IMSON Toner Cartridge')}</td><td>${esc(p.toner_model||'')}</td><td><button class="btn btn-primary" onclick="openQR('${js(location.origin+location.pathname+'?qr='+encodeURIComponent(p.qr_code))}','${js(p.product_name||'IMSON Product')}')">Generate</button></td></tr>`).join('')+'</tbody></table>';
-}
-function openQR(url,title) { document.getElementById('qrTitle').textContent=title; document.getElementById('qrUrl').textContent=url; document.getElementById('qr').innerHTML=''; new QRCode(document.getElementById('qr'),{text:url,width:240,height:240,colorDark:'#071873',colorLight:'#ffffff'}); document.getElementById('qrModal').classList.remove('hidden'); }
-function closeQR() { document.getElementById('qrModal').classList.add('hidden'); }
-function resetForm() { ['productId','code','name','yield','description','printers'].forEach(id=>document.getElementById(id).value=''); document.getElementById('brand').value='IMSON'; document.getElementById('color').value='Black'; document.getElementById('type').value='Compatible Toner Cartridge'; document.getElementById('formTitle').textContent='Add Product'; }
-async function saveProduct() {
-  if(!configured()) return;
-  const payload={product_code:document.getElementById('code').value.trim(),product_name:document.getElementById('name').value.trim(),brand:document.getElementById('brand').value.trim()||'IMSON',page_yield:document.getElementById('yield').value.trim(),color:document.getElementById('color').value.trim(),cartridge_type:document.getElementById('type').value.trim(),description:document.getElementById('description').value.trim(),printer_models:document.getElementById('printers').value.split('\n').map(x=>x.trim()).filter(Boolean)};
-  if(!payload.product_code||!payload.product_name) { document.getElementById('saveMsg').textContent='Product Code and Product Name are required.'; return; }
-  const id=document.getElementById('productId').value; const res=id?await db.from('products').update(payload).eq('id',id):await db.from('products').insert(payload);
-  document.getElementById('saveMsg').textContent=res.error?res.error.message:'Product saved successfully.'; if(!res.error) { resetForm(); loadAdminProducts(); }
-}
-
-openProductFromQR();
-showAdminIfRequested();
-if(!new URLSearchParams(location.search).get('qr')) document.getElementById('publicProducts').innerHTML='<div class="card" style="padding:18px;color:#667085">Scan the QR code on your IMSON box or enter the printed QR number above.</div>';
+document.getElementById('search').addEventListener('keydown',e=>{if(e.key==='Enter')loadProducts();});
+async function openProductFromQR(){const p=new URLSearchParams(location.search);const c=p.get('qr')||p.get('code')||p.get('product');if(!c)return;document.getElementById('search').value=c;await loadProducts();}
+function showPublic(){document.getElementById('publicView').classList.remove('hidden');document.getElementById('adminView').classList.add('hidden');window.scrollTo({top:0,behavior:'smooth'});}
+async function showAdminIfRequested(){const p=new URLSearchParams(location.search);if(p.get('admin')!=='1')return;document.getElementById('publicView').classList.add('hidden');document.getElementById('adminView').classList.remove('hidden');const s=await db.auth.getSession();if(s.data.session){showAdminPanel();}else{document.getElementById('adminLoginBox').classList.remove('hidden');}}
+async function adminLogin(){const email=document.getElementById('adminEmail').value.trim(),password=document.getElementById('adminPassword').value;const msg=document.getElementById('adminLoginMsg');const {error}=await db.auth.signInWithPassword({email,password});if(error){msg.style.color='#b42318';msg.textContent=error.message;return;}msg.style.color='#137333';msg.textContent='Logged in successfully.';showAdminPanel();}
+async function adminLogout(){await db.auth.signOut();document.getElementById('adminWorkspace').classList.add('hidden');document.getElementById('adminPanel').classList.add('hidden');document.getElementById('adminLoginBox').classList.remove('hidden');}
+function showAdminPanel(){document.getElementById('adminLoginBox').classList.add('hidden');document.getElementById('adminPanel').classList.remove('hidden');document.getElementById('adminWorkspace').classList.remove('hidden');loadAdminProducts();}
+async function loadAdminProducts(){if(!configured())return;const {data,error}=await db.from('qr_products').select('*').order('id',{ascending:true});const el=document.getElementById('adminProducts');if(error){el.innerHTML='<span style="color:#b42318">'+esc(error.message)+'</span>';return;}el.innerHTML='<table class="admin-table"><thead><tr><th>QR</th><th>Product</th><th>Model</th><th>Actions</th></tr></thead><tbody>'+data.map(p=>`<tr><td>${esc(p.qr_code)}</td><td>${esc(p.product_name||'IMSON Toner Cartridge')}</td><td>${esc(p.toner_model||'')}</td><td><button class="btn btn-primary" onclick="editProduct('${js(p.id)}')">Edit</button> <button class="btn btn-orange" onclick="openQR('${js(location.origin+location.pathname+'?qr='+encodeURIComponent(p.qr_code))}','${js(p.product_name||'IMSON Product')}')">QR</button> <button class="btn" style="background:#b42318;color:#fff" onclick="deleteProduct('${js(p.id)}')">Delete</button></td></tr>`).join('')+'</tbody></table>';}
+function openQR(url,title){document.getElementById('qrTitle').textContent=title;document.getElementById('qrUrl').textContent=url;document.getElementById('qr').innerHTML='';new QRCode(document.getElementById('qr'),{text:url,width:240,height:240,colorDark:'#071873',colorLight:'#ffffff'});document.getElementById('qrModal').classList.remove('hidden');}
+function closeQR(){document.getElementById('qrModal').classList.add('hidden');}
+function resetForm(){['productId','qrCode','code','name','tonerModel','alternateCode','yield','description','printers'].forEach(id=>document.getElementById(id).value='');document.getElementById('brand').value='IMSON';document.getElementById('color').value='Black';document.getElementById('type').value='Compatible Toner Cartridge';document.getElementById('formTitle').textContent='Add QR Product';document.getElementById('saveMsg').textContent='';}
+async function editProduct(id){const {data,error}=await db.from('qr_products').select('*').eq('id',id).single();if(error){alert(error.message);return;}document.getElementById('productId').value=data.id;document.getElementById('qrCode').value=data.qr_code||'';document.getElementById('code').value=data.product_code||'';document.getElementById('name').value=data.product_name||'';document.getElementById('tonerModel').value=data.toner_model||'';document.getElementById('alternateCode').value=data.alternate_code||'';document.getElementById('brand').value=data.brand||'IMSON';document.getElementById('yield').value=data.page_yield||'';document.getElementById('color').value=data.color||'Black';document.getElementById('type').value=data.cartridge_type||'Compatible Toner Cartridge';document.getElementById('description').value=data.description||'';document.getElementById('printers').value=Array.isArray(data.printers)?data.printers.join('\n'):Array.isArray(data.printer_models)?data.printer_models.join('\n'):'';document.getElementById('formTitle').textContent='Edit QR Product';window.scrollTo({top:document.getElementById('adminView').offsetTop,behavior:'smooth'});}
+async function saveProduct(){if(!configured())return;const payload={qr_code:document.getElementById('qrCode').value.trim(),product_code:document.getElementById('code').value.trim(),product_name:document.getElementById('name').value.trim(),toner_model:document.getElementById('tonerModel').value.trim(),alternate_code:document.getElementById('alternateCode').value.trim(),brand:document.getElementById('brand').value.trim()||'IMSON',page_yield:document.getElementById('yield').value.trim(),color:document.getElementById('color').value.trim(),cartridge_type:document.getElementById('type').value.trim(),description:document.getElementById('description').value.trim(),printers:document.getElementById('printers').value.split('\n').map(x=>x.trim()).filter(Boolean)};if(!payload.qr_code||!payload.product_code||!payload.product_name){document.getElementById('saveMsg').textContent='QR Code, Product Code and Product Name are required.';return;}const id=document.getElementById('productId').value;const res=id?await db.from('qr_products').update(payload).eq('id',id):await db.from('qr_products').insert(payload);document.getElementById('saveMsg').textContent=res.error?res.error.message:'Product saved successfully.';if(!res.error){resetForm();loadAdminProducts();}}
+async function deleteProduct(id){if(!confirm('Delete this QR product?'))return;const {error}=await db.from('qr_products').delete().eq('id',id);if(error)alert(error.message);else loadAdminProducts();}
+openProductFromQR();showAdminIfRequested();if(!new URLSearchParams(location.search).get('qr')&&!new URLSearchParams(location.search).get('code')&&!new URLSearchParams(location.search).get('product'))document.getElementById('publicProducts').innerHTML='<div class="card" style="padding:18px;color:#667085">Scan the QR code on your IMSON box or enter the printed QR number above.</div>';
 </script>
 </body>
 </html>
