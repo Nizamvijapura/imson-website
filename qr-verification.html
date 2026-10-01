@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IMSON | Product Verification</title>
+<title>Product Verification | IMSON™</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <style>
@@ -86,22 +86,10 @@ textarea{min-height:90px;resize:vertical}
 <link rel="shortcut icon" type="image/jpeg" href="Fevicon.jpg">
 </head>
 <body>
-<header class="site-header">
-  <a class="brand-link" href="index.html" aria-label="IMSON Home"><img class="site-logo" src="imson-logo.png" alt="IMSON™ Infinite Innovation"></a>
-  <nav class="site-nav" aria-label="Main navigation">
-    <a href="index.html">Home</a><a href="products.html">Products</a><a href="about.html">About Us</a><a href="contact.html">Contact</a><a class="special" href="toner-finder.html">Toner Finder</a><a class="special active" href="qr-verification.html">QR Verify</a>
-  </nav>
-</header>
+<header class="site-header"><div class="container header-inner"><a class="brand-link" href="index.html" aria-label="IMSON Home"><img class="site-logo" src="imson-logo.png" alt="IMSON™ Infinite Innovation"></a><button class="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button><nav class="site-nav" aria-label="Main navigation"><a href="index.html">Home</a><a href="products.html">Products</a><a href="about.html">About Us</a><a href="contact.html">Contact</a><a class="special" href="toner-finder.html">Toner Finder</a><a class="special active" href="qr-verification.html">QR Verify</a></nav></div></header>
 
 <main id="publicView" class="container">
-  <section class="hero">
-    <h1>IMSON Product Verification</h1>
-    <p>Scan the QR code on your IMSON cartridge box to view official product information.</p>
-    <div class="search">
-      <input id="search" placeholder="Enter QR code number (e.g. 255 or 101)" autocomplete="off">
-      <button onclick="loadProducts()">Search</button>
-    </div>
-  </section>
+  <section class="inner-hero qr-hero"><div class="container"><span class="eyebrow">PRODUCT AUTHENTICATION</span><h1>Verify your IMSON<br><span>product.</span></h1><p>Enter the QR number printed on your IMSON cartridge or box.</p><div class="verify-search"><input id="search" placeholder="Enter QR code number" autocomplete="off"><button class="btn btn-orange" onclick="loadProducts()">Verify Product →</button></div></div></section>
   <div id="publicProducts" class="message"></div>
 </main>
 
@@ -149,13 +137,7 @@ HP LaserJet P1106"></textarea>
   </div>
 </div>
 
-<footer class="footer">
-  <div class="brand">IMSON</div>
-  <div class="tag">Infinite Innovation</div>
-  <div class="marketed">Marketed by WIZTECH INNOVATION LLP — ISO 9001:2015 Certified</div>
-  <div class="contact">Contact : 9727908889</div>
-  <div class="official">Official IMSON product verification system</div>
-</footer>
+<footer class="site-footer"><div class="container footer-grid"><div><img src="imson-logo.png" class="footer-logo" alt="IMSON™"><p class="footer-tag">Infinite Innovation in Printing Solutions.</p></div><div><h4>IMSON</h4><a href="products.html">Products</a><a href="toner-finder.html">Toner Finder</a><a href="qr-verification.html">QR Verify</a></div><div><h4>Company</h4><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="tel:9727908889">9727908889</a></div><div><h4>Marketed By</h4><p>WIZTECH INNOVATION LLP</p><p>ISO 9001:2015 Certified</p><p>7,8,9, Mahavir Complex, Near S.K.MRI, Below Meldikrupa GAS Agency, Girdharnagar, Himatnagar-383001, Dist. Sabarkantha, Gujarat. INDIA.</p></div></div><div class="container footer-bottom"><span>© 2026 IMSON™ | Infinite Innovation. All Rights Reserved.</span><span>Marketed by WIZTECH INNOVATION LLP · ISO 9001:2015 Certified</span></div></footer>
 
 <script>
 const SUPABASE_URL = "https://jehjwziynmklhstfksfe.supabase.co";
@@ -201,5 +183,6 @@ async function saveProduct(){if(!configured())return;const payload={qr_code:docu
 async function deleteProduct(id){if(!confirm('Delete this QR product?'))return;const {error}=await db.from('qr_products').delete().eq('id',id);if(error)alert(error.message);else loadAdminProducts();}
 openProductFromQR();showAdminIfRequested();if(!new URLSearchParams(location.search).get('qr')&&!new URLSearchParams(location.search).get('code')&&!new URLSearchParams(location.search).get('product'))document.getElementById('publicProducts').innerHTML='<div class="card" style="padding:18px;color:#667085">Scan the QR code on your IMSON box or enter the printed QR number above.</div>';
 </script>
+<script>document.addEventListener('DOMContentLoaded',()=>{const b=document.querySelector('.nav-toggle'),n=document.querySelector('.site-nav');if(b){b.addEventListener('click',()=>{n.classList.toggle('open');b.setAttribute('aria-expanded',n.classList.contains('open'))});}document.querySelectorAll('.site-nav a').forEach(a=>a.addEventListener('click',()=>n.classList.remove('open')))});</script>
 </body>
 </html>
